@@ -1,0 +1,31 @@
+version: '3'
+services:
+  football-portal-application:
+    image: footballportalapplication_microservice_1:1.0
+    ports:
+      - "8099:8099"
+    networks:
+      - network
+
+  football-team-application:
+    image: footballteamapplication_microservice_2:1.0
+    ports:
+      - "8090:8090"
+    networks:
+      - network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    networks:
+      - network
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - football-portal-application
+      - football-team-application
+
+networks:
+  network:
+    driver: bridge
